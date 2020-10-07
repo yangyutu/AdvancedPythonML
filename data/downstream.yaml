@@ -1,0 +1,13 @@
+dataloader:
+  n_jobs: 6                                             # Subprocess used for torch Dataloader
+  phone_path: 'data/cpc_phone'                          # phone boundary label data path for the phone classification task. set to 'data/libri_phone' or 'data/cpc_phone'
+  train_set: ['train-clean-100']                        # ['train-clean-100', 'train-clean-360', 'train-other-500'] for pre-training. ['train-clean-360'] or ['train-clean-100'] for libri phone exp or cpc phone exp, respectively.
+  train_proportion: 1.0                                 # Currently only effect the `phone classification task`, use this percent of `train_set` for downstream task training to demonstrate mockingjay generality
+
+model:                                                  # downstream model config  
+  linear:
+    hidden_size: [48, 48]                                      # when linear: True, the hidden_size is ignored
+    drop: 0.0                                           # The dropout ratio, not used when `linear` is set to `True`.
+    select_hidden: 'upstream'                           # support modes: ['upstream', 'last', 'first', 'average', 'weighted_sum', 'weighted_sum_norm', int], this only have effect when a shape of (batch_size, num_layer, seq_len, feature_dim) is feed to the network
+    sequencial: False
+    linear: True                                        # whether to make the classifier linear
